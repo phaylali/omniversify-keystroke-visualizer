@@ -1,92 +1,66 @@
-# **Omniversify Keystroke Visualizer ⌨️🖱️✨**
+# Omniversify Keystroke Visualizer
 
-A simple, modern, and highly configurable open-source tool to display your keystrokes and mouse actions on screen. Perfect for creating tutorials, live streaming, presentations, or just making your screencasts look more professional\! 🚀
+A beautiful, gamified keystroke visualizer for Linux and Windows. It displays your keystrokes in real-time using high-quality icons or fonts, making it perfect for screen recording, coding demonstrations, or gaming.
 
-Created during an episode of the **\#MGDB (Moroccan Game Developer Blog)**, this tool is built with flexibility in mind.
+> [!IMPORTANT]
+> This project currently features a **Python (evdev)** implementation which is highly recommended for Wayland users (GNOME/KDE) as it bypasses security restrictions that block other visualizers.
 
-### **🌟 Features**
+## Features
 
-* **Keyboard, Click & Scroll Display:** Visualizes every input, including keyboard keys, mouse clicks (LMB, RMB, MMB), and scroll wheel actions (▲/▼).  
-* **Highly Customizable:** Control the look, feel, and position of the overlay using a simple config.ini file. No code editing required\!  
-* **Custom Fonts & Colors:** Easily change the font, size, color, and background to match your brand or desktop theme.  
-* **Flexible Positioning:** Place the overlay anywhere on your screen: top, bottom, center, or any of the corners, with fine-tuned pixel offsets.  
-* **Lightweight & Cross-Platform:** Built with Python and standard libraries, making it efficient and easy to run on most Linux distributions.
+- **Gamified Aesthetics**: Uses the **Kenney Input** font for beautiful, controller-style key icons.
+- **Wayland Support**: Built-in compatibility for modern Linux desktops via hardware-level event reading.
+- **Customizable**: Control colors, font size, position, and duration via `config.ini`.
+- **Lightweight**: Minimal performance overhead.
 
-### **🚀 Setup & Installation**
+## Installation & Setup (Linux)
 
-Getting the visualizer up and running is easy. Just follow these three steps.
+The Linux version uses `evdev` to read keystrokes directly from your hardware.
 
-#### **1\. Get the Files**
+### Requirements
 
-First, clone this repository or download the files to a directory on your computer.
+- [uv](https://docs.astral.sh/uv/) (Python package manager)
+- Sudo privileges (required to read hardware input devices on Wayland)
 
-git clone \<your-repo-url-here\>  
-cd omniversify-keystroke-visualizer
+### Font Installation (Required for Icons)
 
-You should have two main files in your directory:
+To see the gamified icons, you must install the font to your system:
 
-* visualizer.py (The main application)  
-* config.ini (The configuration file)
+```bash
+mkdir -p ~/.local/share/fonts
+cp ./font/* ~/.local/share/fonts
+fc-cache -f
+```
 
-#### **2\. Install Dependencies**
+### Running the Visualizer
 
-This tool requires Python 3 and a few libraries.
+```bash
+sudo env "PATH=$PATH" uv run --with evdev python3 visualizer.py
+```
 
-a) Install pip and tkinter:  
-These packages are often required on Linux systems.
+## Configuration
 
-* **On Debian/Ubuntu:**  
-  sudo apt update  
-  sudo apt install python3-pip python3-tk
+Edit `config.ini` to customize the appearance:
 
-* **On Fedora:**  
-  sudo dnf install python3-pip python3-tkinter
+```ini
+[Appearance]
+font_family = Kenney Input Keyboard & Mouse
+font_size = 80
+text_color = white
+bg_color = #2E2E2E
+duration_ms = 1500
 
-* **On Arch Linux:**  
-  sudo pacman \-Syu python-pip tk
+[Position]
+position = bottom-right
+x_offset = -20
+y_offset = -150
+```
 
-b) Install pynput:  
-This is the Python library used to listen for keyboard and mouse input.  
-pip install pynput
+### Position Options
 
-#### **3\. Run the Application**
+- `top-left`, `top-center`, `top-right`
+- `center`
+- `bottom-left`, `bottom-center`, `bottom-right`
 
-Once the dependencies are installed, you can run the visualizer from your terminal:
+## License
 
-python visualizer.py
-
-The application will start running in the background. To stop it, simply press Ctrl+C in the terminal where it's running.
-
-### **⚙️ Configuration (config.ini)**
-
-The magic of this tool lies in the config.ini file. Open it with any text editor to change how the visualizer looks and behaves.
-
-#### **\[Appearance\] Section**
-
-| Setting | Description | Example |
-| :---- | :---- | :---- |
-| font\_family | The name of the font to use. Must be installed on your system. | Tajawal |
-| font\_size | The size of the font. | 24 |
-| text\_color | The color of the text. Can be a name or hex code. | white |
-| bg\_color | The background color of the key overlay. | \#2E2E2E |
-| padding\_x | Horizontal space (in pixels) inside the key. | 20 |
-| padding\_y | Vertical space (in pixels) inside the key. | 10 |
-| duration\_ms | How long the key stays on screen, in milliseconds. | 1500 |
-
-#### **\[Position\] Section**
-
-| Setting | Description | Example |
-| :---- | :---- | :---- |
-| position | The base position of the overlay on the screen. | bottom-left |
-| y\_offset | An extra vertical offset in pixels. Negative values move it up. | \-150 |
-| x\_offset | An extra horizontal offset in pixels. | 50 |
-
-**Available position options:**
-
-* top-left, top-center, top-right  
-* center  
-* bottom-left, bottom-center, bottom-right
-
-### **❤️ Contributing**
-
-This is an open-source project\! Contributions are welcome. Feel free to fork the repository, make improvements, and submit a pull request. You can also open an issue to report a bug or suggest a new feature.
+MIT
